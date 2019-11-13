@@ -21,7 +21,10 @@ AZUL = (0, 0, 255)
 VIOLETA = (98, 0, 255)
 ANCHO = 700
 LARGO = 500
-
+x_1 = 20
+x_2 = ANCHO - x_1
+y_1 = 20
+y_2 = LARGO - y_1
 pygame.init()
    
 # Establecemos las dimensiones de la pantalla [largo,altura]
@@ -37,6 +40,9 @@ y = LARGO*0.8
 vel = 5
 # Se usa para establecer cuan rápido se actualiza la pantalla
 var_izq = False
+var_der = False
+var_arr = False
+var_aba = False
 reloj = pygame.time.Clock()
 
 # -------- Bucle principal del Programa -----------
@@ -47,20 +53,46 @@ while not hecho:
             hecho = True
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                print("Player moved up!")
+                if y - vel > y_1:
+                    y -= vel
+                    var_arr = True 
             elif event.key == pygame.K_a:
-                x -= vel
-                var_izq = True
+                if x - vel > x_1:
+                    x -= vel
+                    var_izq = True
             elif event.key == pygame.K_s:
-                print("Player moved down!")
+                if y - vel < y_2:
+                    y += vel
+                    var_aba = True
             elif event.key == pygame.K_d:
-                x += vel
+                if x + vel < x_2:
+                    x += vel
+                    var_der = True
         elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
+            if event.key == pygame.K_w:
+                var_arr = False 
+            elif event.key == pygame.K_a:
                 var_izq = False
+            elif event.key == pygame.K_s:
+                var_aba = False
+            elif event.key == pygame.K_d:
+                var_der = False
 
     if var_izq == True:
-        x -= vel
+        if x - vel > x_1:
+            x -= vel
+
+    if var_der == True:
+        if x + vel < x_2:
+            x += vel
+
+    if var_arr == True:
+        if y - vel > y_1:
+            y -= vel
+
+    if var_aba == True:
+        if y - vel < y_2:
+            y += vel
  
      
     pantalla.fill(BLANCO)
