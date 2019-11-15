@@ -1,15 +1,25 @@
 
 import pygame 
 import time
-
+ANCHO = 700
+LARGO = 500
 pygame.init()
 pantalla = pygame.display.set_mode([ANCHO, LARGO]) 
 pygame.display.set_caption("Lineas")
+
+NEGRO = (0, 0 ,0)
+BLANCO = (255, 255, 255)
+VERDE = (0, 255, 0)
+ROJO = (255, 0, 0)
+AZUL = (0, 0, 255)
+VIOLETA = (98, 0, 255)
 
 #El bucle se ejecuta hasta que el usuario hace click sobre el botón de cierre.
 hecho = False
 x = ANCHO/2
 y = LARGO*0.8
+x_t = 100
+y_t = 50
 
 ancho_juego = 5
 largo_juego = 5
@@ -21,6 +31,21 @@ var_arr = False
 var_aba = False
 
 reloj = pygame.time.Clock()
+
+def pintar_puntos(can_x, can_y, sep, coord_ini):
+    i = 0
+    j = 0
+    v_x = coord_ini[0]
+    v_y = coord_ini[1]
+    while(j < can_y):
+        i = 0
+        while(i < can_x):
+            pygame.draw.circle(pantalla, ROJO, (v_x, v_y), 3, 0)
+            v_x = v_x + sep
+            i = i + 1
+        v_x = coord_ini[0]
+        v_y = v_y + sep
+        j = j + 1
 
 # -------- Bucle principal del Programa -----------
 while not hecho:
@@ -58,54 +83,29 @@ while not hecho:
                 var_aba = False
             elif event.key == pygame.K_d:
                 var_der = False
-        elif event.type == nueva_linea:
-            if perdio == False:
-                if bucle_generar > bucle_time:                    
-                    generarCuadros()
-                    bucle_generar = 0
-                bucle_generar = bucle_generar + 1  
-                bucle = bucle + 1           
-                if bucle == 510:
-                    vel_caida = vel_caida + 1
-                    bucle = 0
-                    bucle_time = bucle_time - vel_caida * 2
 
-    if perdio == False:
-        if var_izq == True:
-            if x - vel > x_1:
-                x -= vel
+    if var_izq == True:
+        if x - vel > x_1:
+            x -= vel
 
-        if var_der == True:
-            if x + vel < x_2:
-                x += vel
+    if var_der == True:
+        if x + vel < x_2:
+            x += vel
 
-        if var_arr == True:
-            if y - vel > y_1:
-                y -= vel
+    if var_arr == True:
+        if y - vel > y_1:
+            y -= vel
 
-        if var_aba == True:
-            if y - vel < y_2:
-                y += vel
-     
-        pantalla.fill(BLANCO)
-        actual = pygame.draw.rect(pantalla, ROJO, [x, y, 20, 20], 0)
-        
-        perdio = moverCuadros(actual)
-
-        pygame.display.flip()
-        reloj.tick(60)
-    else:
-        pantalla.fill(BLANCO)
-        mostrarFinJuego()
-        x = ANCHO/2
-        y = LARGO*0.8
-        cuadros = []    
-        flag_velocidad = 0
-        vel_caida = 1    
-        bucle = 0
-        bucle_time = 50
-        pygame.draw.rect(pantalla, ROJO, [x, y, 20, 20], 0)
-        pygame.display.update()
+    if var_aba == True:
+        if y - vel < y_2:
+            y += vel
+ 
+    pantalla.fill(BLANCO)
+    actual = pygame.draw.rect(pantalla, ROJO, [x, y, 20, 20], 0)
+    
+    pintar_puntos(10, 5, 20, [100,100])
+    pygame.display.flip()
+    reloj.tick(60)
      
 
 pygame.quit()
