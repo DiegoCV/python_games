@@ -55,7 +55,12 @@ cuadros = []
 bucle = 0
 perdio = False
 flag_velocidad = 0
-limit_bucle = 10
+limit_bucle = 2
+bucle_generar = 0
+bucle_time = 50
+nueva_linea = 1
+#
+pygame.time.set_timer(nueva_linea, 10)
 
 def moverCuadros(actual):
     for i in (cuadros): 
@@ -103,8 +108,7 @@ while not hecho:
                     var_der = True
             elif event.key == pygame.K_r:
                 if(perdio == True):                          
-                    perdio = False                
-                    
+                    perdio = False                                   
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_w:
                 var_arr = False 
@@ -114,6 +118,17 @@ while not hecho:
                 var_aba = False
             elif event.key == pygame.K_d:
                 var_der = False
+        elif event.type == nueva_linea:
+            if perdio == False:
+                if bucle_generar > bucle_time:                    
+                    generarCuadros()
+                    bucle_generar = 0
+                bucle_generar = bucle_generar + 1  
+                bucle = bucle + 1           
+                if bucle == 510:
+                    vel_caida = vel_caida + 1
+                    bucle = 0
+                    bucle_time = bucle_time - vel_caida * 2
 
     if perdio == False:
         if var_izq == True:
@@ -134,20 +149,8 @@ while not hecho:
      
         pantalla.fill(BLANCO)
         actual = pygame.draw.rect(pantalla, ROJO, [x, y, 20, 20], 0)
-        perdio = moverCuadros(actual)
-
-
-        if bucle == 0:
-            generarCuadros()
         
-        if bucle > limit_bucle:
-            bucle = 0
-            flag_velocidad = flag_velocidad + 1
-            if flag_velocidad == 5:
-                vel_caida = vel_caida + 1
-                flag_velocidad = 0
-        else:
-            bucle = bucle + 1
+        perdio = moverCuadros(actual)
 
         pygame.display.flip()
         reloj.tick(60)
@@ -159,7 +162,8 @@ while not hecho:
         cuadros = []    
         flag_velocidad = 0
         vel_caida = 1    
-        limit_bucle = 40 
+        bucle = 0
+        bucle_time = 50
         pygame.draw.rect(pantalla, ROJO, [x, y, 20, 20], 0)
         pygame.display.update()
      
