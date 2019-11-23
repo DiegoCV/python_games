@@ -22,9 +22,10 @@ y = LARGO*0.8
 x_t = 100
 y_t = 100
 
-columnas = 3
 filas = 3
-nodos = filas * columnas
+columnas = 3
+
+
 
 # Se usa para establecer cuan rápido se actualiza la pantalla
 var_izq = False
@@ -43,11 +44,7 @@ lc_coord_fin = [x_t + sep, y_t]
 lineas_final = []
 
 #Matriz con el estado actual del juego filas columnas
-matriz_estado = np.zeros((nodos, nodos), dtype=bool)
-print(matriz_estado)
-print(matriz_estado.item((1,1)))
-print(lc_coord_fin)
-reloj = pygame.time.Clock()
+tablero = Tablero(filas, columnas)
 
 def pintar_puntos(can_x, can_y, sep, coord_ini):   
     i = 0
@@ -99,11 +96,7 @@ def sumeCoordenada(c_cord, orientacion, direccion):
             c_cord[0] = c_cord[0] + sep
     return c_cord
 
-def hay_relacion(nodo_1, nodo_2):
-    return matriz_estado.item(nodo_1, nodo_2)   
 
-def obtener_nodo(c_ini):
-    return (columnas*parsear_coordenada(c_ini)[0]+parsear_coordenada(c_ini)[1]) - 1
 
 def pintar_linea(c_ini, c_fin, color):
     pygame.draw.line(pantalla, color, c_ini, c_fin, 1)
@@ -144,15 +137,7 @@ def esta_vertical_linea(c_ini, c_fin):
 def esta_horizontal_linea(c_ini, c_fin):
     return c_ini[1] == c_fin[1]
 
-def registrar_linea(c_ini, c_fin):
-    #lineas_final.append({"c_ini":c_ini, "c_fin":c_fin})
-    lineas_final.append(Linea(c_ini[0],c_ini[1],c_fin[0],c_fin[1]))
-    nodo_1 = columnas*parsear_coordenada(c_ini)[0]+parsear_coordenada(c_ini)[1]
-    nodo_2 = columnas*parsear_coordenada(c_fin)[0]+parsear_coordenada(c_fin)[1]
-    matriz_estado.itemset((nodo_1,nodo_2), True)
-    matriz_estado.itemset((nodo_2,nodo_1), True)
-    #print(matriz_estado)
- 
+
 def parsear_coordenada(coordenada):
     return [int((coordenada[1] - 100)/20), int((coordenada[0] - 100)/sep)]
 
